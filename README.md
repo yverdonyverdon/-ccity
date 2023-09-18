@@ -1,277 +1,72 @@
-<!-- PROJECT LOGO -->
-<br />
-<div align="center">
-  <a href="https://github.com/GlintonLiao/questopia">
-    <img src="./public/logo.svg" alt="Logo" width="120" height="120">
-  </a>
+# Getting Started with Create React App
 
-  <h3 align="center">Questopia</h3>
+DEV
 
-  <p align="center">
-    3D Room · Online Portfolio · Personal Website
-    <br />
-    <a href="https://questopia.vercel.app/">View Live</a>
+This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-  </p>
-</div>
+## Available Scripts
 
-<!-- ABOUT THE PROJECT -->
-## About The Project
+In the project directory, you can run:
 
-After working as an architect for two years, I decided to switch my career path to become a software engineer. Questopia is the 3D visualization of my room, and it's also my online portfolio, mainly consist of two parts of projects: 
+### `npm start`
 
-1. My current projects as a programmer(2022-present, still under construction...)
-2. My previous projects as an architectural designer(2018-2021)
+Runs the app in the development mode.\
+Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-Visit the [website](https://questopia.vercel.app/) to discover more!
+The page will reload if you make edits.\
+You will also see any lint errors in the console.
 
-## Tech Stacks
+### `npm test`
 
-+ HTML & CSS
-+ TypeScript
-+ Three.js
-  + GLSL/Shader
-  + Blender
-  + Tweakpane
-  + normalize-wheel
-+ Vite
-  + plugin-glsl
-+ Vercel
-  
-### Reference
+Launches the test runner in the interactive watch mode.\
+See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-If you want to build your own projects using same settings as mine, you can reference to [threejs-template-typescript](https://github.com/GlintonLiao/threejs-template-typescript), click "Use this template".
+### `npm run build`
 
-## Key Concepts
+Builds the app for production to the `build` folder.\
+It correctly bundles React in production mode and optimizes the build for the best performance.
 
-### Modeling
+The build is minified and the filenames include the hashes.\
+Your app is ready to be deployed!
 
-+ #### Performance Enhancement
-  
-  Because I set the navigation limits, there are some faces couldn't be seen, such as the back side of the books, the bottom of the bed, and the bottom sides of every objects on the table.
-  
-  ![perf enhancement](https://user-images.githubusercontent.com/37015336/194730982-958be2f5-5fb3-4383-ad12-f3faf56251d6.jpg)
-  
-  After deleting the redundant faces, plus some overlapping faces, **the model size went from 18 MB to 3 MB, which improved by 88%**
-  
-+ #### Texture Map
+See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-  There is no dynamic light or any ray tracing in the scene, all colors and shadow are pre-rendered, as known as "Baked". Baking is an important technique for performance, and it also let us to achieve some fancy effect, such as mixing day and night.
-  
-  ![baking](https://user-images.githubusercontent.com/37015336/194731497-8948378d-f5fe-47a3-87f8-c39a76814285.jpg)
-  
-  Get the baked texture maps, and we can load it using three.js
-  
-+ #### Export
+### `npm run eject`
 
-  Click "Export" > `.glb/.gltf` file in Blender, and some key settings:
-  
-  ```
-  Material: no export
-  FlipY: √
-  Geometry:
-    UVs: √
-  Compression: √(uncheck if there is any problem)
-  ```
+**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-### Structures
+If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
 
-+ #### Experience
+Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-  The core structure of the project.
-  
-  `Experience.ts` is a singleton instance, and we load every other parts on this instance.
-  
-  ```typescript
-  // Experience.ts
-  constructor(_options?: OptionProps) {
-      if (Experience.instance) {
-          return Experience.instance
-      } else {
-          Experience.instance = this
-      }
+You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-      // Options
-      this.targetElement = _options?.targetElement
+## Learn More
 
-      if (!this.targetElement) {
-          console.warn("Missing 'targetElement' property")
-          return
-      }
+You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-      this.time = new Time()
-      this.sizes = new Sizes()
+To learn React, check out the [React documentation](https://reactjs.org/).
 
-      this.setConfig()
-      this.setDebug()
-      this.setScene()
-      this.setCamera()
-      this.setRenderer()
-      this.setResources()
-      this.setWorld()
-      this.setNavigation()
+### Code Splitting
 
-      this.sizes.on("resize", () => {
-          this.resize()
-      })
+This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
 
-      this.update()
-  }
-  ```
+### Analyzing the Bundle Size
 
-+ #### World
+This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-  The place holding models, we load models on this instance.
-  
-  ```typescript
-  // World.ts
-  constructor(_options?: any) {
-      this.experience = new Experience()
-      this.config = this.experience.config
-      this.scene = this.experience.scene
-      this.resources = this.experience.resources
+### Making a Progressive Web App
 
-      this.resources.on("groupEnd", (_group) => {
-          if (_group.name === "base") {
-              this.setBaked()
-              this.setTitle()
-              this.setArchiModel()
-              this.setScreens()
-              this.setImages()
-              this.setChair()
-              this.setCoffee()
-              this.setRaycaster()
-          }
-      })
-  }
-  ```
+This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
 
-+ #### Components
+### Advanced Configuration
 
-  Inside each component, we load the mesh and texture, create material for each child of the model, and finally add it to the scene.
-  
-  Remember to set the `flipY` and `encoding` attributes for the texture.
-  
-  ```typescript
-  // Images.ts
-  setModel(): void {
-      this.model = {}
+This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-      // Texture
-      this.model.texture = this.resources.items.imagesDayTexture
-      this.model.texture.flipY = false
-      this.model.texture.encoding = THREE.sRGBEncoding
-      // Material
-      this.model.material = new THREE.MeshBasicMaterial({
-          map: this.model.texture,
-      })
+### Deployment
 
-      // Mesh
-      this.model.mesh = this.resources.items.imagesModel.scene
-      this.model.mesh.material = this.model.material
+This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
 
-      this.model.mesh.traverse((_child: THREE.Object3D) => {
-          if (_child instanceof THREE.Mesh) {
-              _child.material = this.model.material
-          }
-      })
+### `npm run build` fails to minify
 
-      this.scene.add(this.model.mesh)
-  }
-  ```
-
-### Shader Material
-
-To use shader material, we need to define two files: `vertex.glsl`, `fragment.glsl`.
-
-We can pass arguments in ts file, and by pointing at target shader, the shader file can receive the value we pass.
-
-```typescript
-// Baked.ts
-this.room.material = new THREE.ShaderMaterial({
-    uniforms: {
-        uBakedDayTexture: { value: this.room.bakedDayTexture },
-        uBakedNightTexture: { value: this.room.bakedNightTexture },
-        uLightMapTexture: { value: this.room.lightMapTexture },
-
-        uNightMix: { value: 0 },
-
-        uLightScreenColor: {
-            value: new THREE.Color(this.colors.Screen),
-        },
-        uLightScreenStrength: { value: 1.5 },
-
-        uLightLampColor: { value: new THREE.Color(this.colors.Lamp) },
-        uLightLampStrength: { value: 1.6 },
-
-        uLightShelfColor: { value: new THREE.Color(this.colors.Shelf) },
-        uLightShelfStrength: { value: 1.0 },
-    },
-    vertexShader: vertexShader,
-    fragmentShader: fragmentShader,
-})
-```
-
-and we can receive these arguments in shader file:
-
-```glsl
-// baked/fragment.glsl
-uniform sampler2D uBakedDayTexture;
-uniform sampler2D uBakedNightTexture;
-uniform sampler2D uLightMapTexture;
-
-uniform float uNightMix;
-
-uniform vec3 uLightScreenColor;
-uniform float uLightScreenStrength;
-
-uniform vec3 uLightLampColor;
-uniform float uLightLampStrength;
-
-uniform vec3 uLightShelfColor;
-uniform float uLightShelfStrength;
-
-varying vec2 vUv;
-
-void main()
-{
-    vec3 bakedDayColor = texture2D(uBakedDayTexture, vUv).rgb;
-    vec3 bakedNightColor = texture2D(uBakedNightTexture, vUv).rgb;
-    vec3 bakedColor = mix(bakedDayColor, bakedNightColor, uNightMix);
-    vec3 lightMapColor = texture2D(uLightMapTexture, vUv).rgb;
-    ...
-    gl_FragColor = vec4(bakedColor, 1.0);
-}
-```
-
-### Raycaster
-
-To check if the mouse is hovering some elements, we can set a ray caster:
-
-```typescript
-this.raycaster.setFromCamera(
-    this.pointer,
-    this.experience.camera.instance
-)
-const intersects = this.raycaster.intersectObjects(this.objs)
-```
-
-## Run on Your Local Machine
-
-First, clone the project source code from your terminal:
-
-```bash
-git clone git@github.com:GlintonLiao/questopia.git
-cd questopia
-```
-
-Second, install the dependencies and run on your local server:
-
-```sh
-pnpm install
-pnpm run dev
-```
-
-Open [http://localhost:5173](http://localhost:5173) with your browser to see the result.
-
-You can start editing the page by modifying `main.ts`. The page auto-updates as you edit the file.
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
