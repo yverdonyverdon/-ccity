@@ -1,0 +1,34 @@
+* {
+  // @include border();
+
+  font-family: 'Roboto', sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  @include size(100%, 100%);
+
+  overflow-x: hidden;
+}
+
+// ===== Container =====
+.container {
+  @include size(100%, 100vh);
+
+  z-index: 1;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(rgb(183, 215, 245), #acd3f8);
+}
+
+.webgl-container {
+  @include size(100%, 100vh);
+
+  z-index: 1;
+  position: relative;
+  outline: none;
+}
+
+.dg {
+  z-index: 1 !important;
+}

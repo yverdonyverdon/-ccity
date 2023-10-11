@@ -1,29 +1,63 @@
-# simcity-threejs-clone
+<!-- 專案名稱 -->
 
-## What is this?
+# `專案名稱`
 
-This is an ongoing project where I attempt to create a clone of SimCity using [Three.js](https://threejs.org/).
+### 框架版本資訊
 
-## How do I run this locally?
+<!-- 相關核心框架 -->
 
-You will first need to install [Node.js](https://nodejs.org).
+- JavaScript ES6
 
-After that, clone this repository, navigate to the root directory and run the following command
+### 開發中套件版本
 
-```bash
-npm run dev
+<!-- 需要Follow版本的套件們 -->
+
+- [webpack-cli](https://github.com/webpack/webpack-cli) : `^3.3.11`
+
+<!-- 其他需求 -->
+
+### ESlint 設定
+
+`extends: ['airbnb-base', 'plugin:prettier/recommended']`
+
+### Branch 切分
+
+- master -> 穩定主線
+- dev -> 開發主線，debug 後進 master
+
+### Tag 版本號資訊
+
+- v0.0.0 [主版本號].[次版本號].[修訂版本號]
+- 主版本號：軟體有重大更新的時候遞增，重大更新通常是指功能與介面都有大幅度變動的時候
+- 次版本號：軟體發佈新功能，但是並不會大幅影響到整個軟體的時候遞增
+- 修訂版本號：通常是在軟體有 bug，發布 bug 的修正版時遞增
+
+### 安裝
+
+```
+yarn install
 ```
 
-## How did you make this?
+### 開發
 
-Want to know how I made this? Follow the YouTube tutorial series [here](https://www.youtube.com/playlist?list=PLtzt35QOXmkJ9unmoeA5gXHcscQHJVQpW)
+```
+yarn dev
+```
 
-## I want to play with it!
+### 編譯
 
-Here you go!
+```
+yarn build
+```
 
-https://dgreenheck.github.io/simcity-threejs-clone
+### beta
 
-## License
+```
+yarn beta
+```
 
-This code is covered by the MIT License. TLDR; you can do whatever you want with it!
+### 部署
+
+```
+yarn deploy
+```
